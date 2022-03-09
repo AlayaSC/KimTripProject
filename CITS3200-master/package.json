@@ -1,0 +1,26 @@
+{
+  "name": "travelapp",
+  "version": "1.0.0",
+  "description": "Kimberley Travel App for CITS3200",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liamp47/CITS3200.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liamp47/CITS3200/issues"
+  },
+  "homepage": "https://github.com/liamp47/CITS3200#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.11",
+    "nodemon": "^1.12.0",
+    "pouchdb": "^6.3.4"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "android": {
+    "release": {
+      "keystore": "KTAKey.keystore",
+      "storePassword": "kimberly",
+      "alias": "kimberlyTA",
+      "password": "kimberly",
+      "keystoreType": ""
+    }
+  }
+}

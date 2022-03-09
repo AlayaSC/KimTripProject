@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">Close</button>
+        </ion-buttons>
+        <ion-title>Select Location</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-split-pane id="modalmap"></ion-split-pane>
+
+    <ion-fab style="padding-bottom: 14px" center bottom>
+        <button *ngIf="!placeMarker" ion-fab color="light" (click)="getGPS()"><ion-icon name="pin"></ion-icon></button>
+        <button *ngIf="placeMarker" ion-fab color="danger" (click)="cancelPlace()"><ion-icon name="close"></ion-icon></button>
+        <button style="margin-top: 10px" *ngIf="placeMarker" ion-fab color="secondary" (click)="confirmPlace()"><ion-icon name="checkmark"></ion-icon></button>
+    </ion-fab>
+    <ion-fab style="padding-bottom: 14px" top center>
+		<button ion-fab color="light" (click)="getLastDiary()"><ion-icon name="navigate"></ion-icon></button>
+    </ion-fab>
+  <ion-fab id="locate" *ngIf="geolocationEnabled" style="padding-bottom: 14px" right bottom>
+  	<button ion-fab color="secondary" (click)="gpsLocate()"><ion-icon name="locate"></ion-icon></button>
+  </ion-fab>
+  <ion-fab id="locate" *ngIf="!geolocationEnabled" style="padding-bottom: 14px" right bottom>
+  	<button ion-fab color="danger" (click)="gpsLocate()"><ion-icon name="locate"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+
+

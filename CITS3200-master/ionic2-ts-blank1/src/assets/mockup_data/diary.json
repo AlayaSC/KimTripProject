@@ -1,0 +1,19 @@
+{
+  "diaryElements": {
+    "entry": [
+      {
+        "date": "2017/09/13",
+        "locationsID": [ {} ],
+        "pictureAttached": [ {} ],
+        "text": "Dear Diary, today..."
+      },
+      {
+        "date": "2017/09/12",
+        "locationsID": [ {} ],
+        "pictureAttached": [ {} ],
+        "text": "Visited a crocodile invested pond."
+      }
+    ],
+    "startDate": "2017/09/12"
+  }
+}

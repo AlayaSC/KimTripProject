@@ -1,0 +1,277 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">Close</button>
+        </ion-buttons>
+    <ion-datetime *ngIf="!editMode" id="date" displayFormat="DD MMMM YYYY" pickerFormat="DD:MMM:YY" min={{datePickerMin}} max={{surveyDate}} [(ngModel)]="surveyDate" (ngModelChange)="dateTimeChanged()"></ion-datetime>
+    <ion-label id="headerDate" *ngIf="editMode">{{formatDate(surveyDate)}}</ion-label>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-slides class="surveySlide" #slides (ionSlideDidChange)="slideChanged()">
+        <!--- START: Q1 Slide-->
+        <ion-slide>
+            <ion-list radio-group [(ngModel)]="SurveyAnswersToday.initial" (ngModelChange)="q1Listener($event, slides.getActiveIndex())">
+                <ion-label class="surveyQuestion" text-wrap>Where did you spend most of your time today?</ion-label>
+                <hr class="questionLine" />
+                <ion-item>
+                    <ion-label text-wrap>Spent most of the day travelling without any significant stops</ion-label>
+                    <ion-radio value="travelling"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap >Stayed at last night's campsite most of the day</ion-label>
+                    <ion-radio [disabled]="lastNightsCoordinates=='Not found' || lastNightsCoordinates==[]" value="campsite"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>I spent most of the day at a different site</ion-label>
+                    <ion-radio value="newsite"></ion-radio>
+                </ion-item>
+            </ion-list>
+            <!-- First Slide: GPS Details -->
+            <ion-list>
+                <ion-item layout-align="center">
+                    <button [disabled]="!showMap" ion-button block color="secondary" (click)="openMap(1)">Select Map</button>
+                </ion-item>
+                <ion-item layout-align="center">
+                    <button [disabled]="!showMap" ion-button block (click)="openManually(1)">Manually Enter Coordinates</button>
+                </ion-item>
+                <ion-item *ngIf="showCoordinates">
+                    <ion-label text-wrap *ngIf="SurveyAnswersToday.initial=='newsite' && chosenCoordinates != [] && chosenCoordinates != 'Not found'">Coordinates: <span *ngIf="chosenCoordinates[2]">{{chosenCoordinates[2]}}, </span>{{chosenCoordinates[0] | number : '1.0-5'}} , {{chosenCoordinates[1] | number : '1.0-5'}}</ion-label>
+                    <ion-label text-wrap *ngIf="SurveyAnswersToday.initial=='campsite' && lastNightsCoordinates != [] && lastNightsCoordinates != 'Not found'">Coordinates: <span *ngIf="lastNightsCoordinates[2]">{{lastNightsCoordinates[2]}}, </span>{{lastNightsCoordinates[0] | number : '1.0-5'}} , {{lastNightsCoordinates[1] | number : '1.0-5'}}</ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-slide>
+        <!-- END: Q1 Slide-->
+        <!--- START: Q1.1 Slide-->
+        <ion-slide *ngIf="SurveyAnswersToday.initial=='newsite'">
+            <ion-list radio-group [(ngModel)]="SurveyAnswersToday.newsite" (ngModelChange)="q1_1Listener($event, slides.getActiveIndex())">
+                <ion-label class="surveyQuestion" text-wrap>What is main feature that lead you to spend time at that site?</ion-label>
+                <hr class="questionLine" />
+                <ion-item>
+                    <ion-label text-wrap>Scenic beauty</ion-label>
+                    <ion-radio value="scenicbeauty"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>Recreation activities (fishing, boating, hiking etc.)</ion-label>
+                    <ion-radio value="recreationactivities"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>Its isolation</ion-label>
+                    <ion-radio value="itsisolation"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Aboriginal culture or heritage</ion-label>
+                    <ion-radio value="aboriginalculture"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>European heritage</ion-label>
+                    <ion-radio value="europeanheritage"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Stop for maintenance and supplies</ion-label>
+                    <ion-radio value="maintenancesupplies"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Good facilities at the site (barbeques, toilets, signs, etc.)</ion-label>
+                    <ion-radio value="goodfacilities"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Friends staying here</ion-label>
+                    <ion-radio value="friendsstayinghere"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Other, please specify:</ion-label>
+                    <ion-radio value="other"></ion-radio>
+                </ion-item>
+                    <ion-item *ngIf="showOther" >
+                        <ion-label readonly="true" text-wrap >{{SurveyAnswersToday.newsite_other}}</ion-label>
+                    </ion-item>
+                        <ion-item *ngIf="showOther" >
+                        <button ion-button (click)="otherPopup(1)">Edit Answer</button>
+                    </ion-item>
+            </ion-list>
+        </ion-slide>
+        <!-- END: Q1.1 Slide -->
+        <!-- START: Q1.2 Slide -->
+        <ion-slide *ngIf="SurveyAnswersToday.initial=='newsite'">
+			<ion-list radio-group [(ngModel)]="SurveyAnswersToday.expectations" (ngModelChange)="q131_Listener($event, slides.getActiveIndex())">
+				<ion-label class="surveyQuestion" text-wrap >Did the main feature of the site meet your expectations?</ion-label>
+				<hr class="questionLine" />
+				<ion-item>
+					<ion-label text-wrap>No, it did not meet my expectations</ion-label>
+					<ion-radio value="didnotmeetexpectations"></ion-radio>
+				</ion-item>
+				<ion-item>
+					<ion-label text-wrap>Yes, it met my expectations</ion-label>
+					<ion-radio value="metexpectations"></ion-radio>
+				</ion-item>
+				<ion-item>
+					<ion-label text-wrap>It was better than expected</ion-label>
+					<ion-radio value="betterthanexpected"></ion-radio>
+				</ion-item>
+			</ion-list>
+			<hr class="questionLine" />
+			<ion-item>
+				<ion-label class="surveyQuestion" text-wrap >How satisfied were you with that site?</ion-label>
+				<hr class="questionLine" />
+				<ion-range min="1" max="7" step="1"  pin="true" snaps="true" [(ngModel)]="SurveyAnswersToday.rating" (ngModelChange)="q132_Listener($event, slides.getActiveIndex())">
+					<ion-label range-left>Unsatisfied</ion-label>
+					<ion-label range-right>Satisfied</ion-label> 
+				</ion-range>
+			</ion-item>
+        </ion-slide>
+        <!-- END: Q1.2 Slide -->
+		<!-- START: Q1 Last Slide -->
+		<ion-slide *ngIf="SurveyAnswersToday.initial=='newsite'">
+			<ion-label class="surveyQuestion" text-wrap>Do you have any additional comments about todays site?</ion-label>
+			<p class="commentBox" [(ngModel)]="commentBoxQ1" ngDefaultControl>{{commentBoxQ1}}</p>
+			<button ion-button (click)="enterComments(1)">Add comments</button>
+			<hr margin-top=5px class="questionLine" />
+		    <ion-label class="surveyQuestion" text-wrap>Would you like to attach a site photo?</ion-label>
+            <!-- <hr class="questionLine" /> -->
+			<button ion-button (click)="callPicture(1)">Add site photo</button>
+		<!--	<ion-card *ngIf="PouchLocal && PouchLocal.today && PouchLocal.today.attachedPicture" >
+				<img src={{PouchLocal.today.attachedPicture}}/>
+			</ion-card>-->
+			<ion-card *ngIf="PouchLocal && PouchLocal.today && PouchLocal.today.attachedPicture">
+				<img src={{PouchLocal.today.attachedPicture}}/>
+			</ion-card>
+		</ion-slide>
+		<!-- END: Q1 Last Slide -->
+        <!--- START: Q2.0 Question Slide-->
+        <ion-slide>
+            <ion-list radio-group [(ngModel)]="SurveyAnswersNight.initial" (ngModelChange)="q2Listener($event, slides.getActiveIndex())">
+                <ion-label class="surveyQuestion" text-wrap>Where are you staying tonight?</ion-label>
+                <hr class="questionLine" />
+                <ion-item>
+                    <ion-label text-wrap>The same place I visited today</ion-label>
+                    <ion-radio [disabled]="SurveyAnswersToday.initial=='travelling'" value="today_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap *ngIf="lastNightsCoordinates!='Not found'">The same place I visited last night</ion-label>
+                    <ion-label class="pleaseMessage" *ngIf="lastNightsCoordinates=='Not found'" text-wrap>The same place I visited last night (not entered)</ion-label>
+                    <ion-radio [disabled]="lastNightsCoordinates=='Not found'" value="campsite_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>I'm spending tonight at a different site</ion-label>
+                    <ion-radio value="newsite_night"></ion-radio>
+                </ion-item>
+            </ion-list>
+            <!-- Q2.0 Slide: GPS Details -->
+            <ion-list>
+                <ion-item layout-align="center">
+                    <button [disabled]="!showMapQ2" ion-button block color="secondary" (click)="openMap(2)">Select Map</button>
+                </ion-item>
+                <ion-item layout-align="center">
+                    <button [disabled]="!showMapQ2" ion-button block (click)="openManually(2)">Manually Enter Coordinates</button>
+                </ion-item>
+                <ion-item *ngIf="showCOORDSquestion2">
+                    <ion-label text-wrap *ngIf="SurveyAnswersNight.initial=='today_night' && chosenCoordinates != [] && chosenCoordinates != 'Not found'">Coordinates: <span *ngIf="chosenCoordinates[2]">{{chosenCoordinates[2]}}, </span>{{chosenCoordinates[0] | number : '1.0-5'}}, {{chosenCoordinates[1] | number : '1.0-5'}}</ion-label>
+                    <ion-label text-wrap *ngIf="SurveyAnswersNight.initial=='newsite_night' && chosenCoordinates != [] && chosenCoordinates != 'Not found'">Coordinates: <span *ngIf="nightTimeCoordinates[2]">{{nightTimeCoordinates[2]}}, </span>{{nightTimeCoordinates[0] | number : '1.0-5'}} , {{nightTimeCoordinates[1] | number : '1.0-5'}}</ion-label>
+                    <ion-label text-wrap *ngIf="SurveyAnswersNight.initial=='campsite_night' && lastNightsCoordinates != [] && lastNightsCoordinates != 'Not found'">Coordinates: <span *ngIf="lastNightsCoordinates[2]">{{lastNightsCoordinates[2]}}, </span>{{lastNightsCoordinates[0] | number : '1.0-5'}}, {{lastNightsCoordinates[1] | number : '1.0-5'}}</ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-slide>
+        <!-- END: Q2.0 Slide-->
+        <!-- START: Q2.1 Slide-->
+        <ion-slide *ngIf="SurveyAnswersNight.initial=='newsite_night'">
+            <ion-list radio-group [(ngModel)]="SurveyAnswersNight.newsite" (ngModelChange)="q2_1Listener($event, slides.getActiveIndex())">
+                <ion-label class="surveyQuestion" text-wrap>What is main feature that attracted you to tonight's site?</ion-label>
+                <hr class="questionLine" />
+                <ion-item>
+                    <ion-label text-wrap>There was no other place to stop/in transit</ion-label>
+                    <ion-radio value="nostops_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Scenic beauty</ion-label>
+                    <ion-radio value="scenicbeauty_night"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>Recreation activities (fishing, boating, hiking etc.)</ion-label>
+                    <ion-radio value="recreationactivities_night"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>Its isolation</ion-label>
+                    <ion-radio value="itsisolation_night"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>Aboriginal culture or heritage</ion-label>
+                    <ion-radio value="aboriginalculture_night"></ion-radio>
+                </ion-item>
+				<ion-item>
+                    <ion-label text-wrap>European heritage</ion-label>
+                    <ion-radio value="europeanheritage_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Good facilities at this site (barbeques, toilets, signs etc.)</ion-label>
+                    <ion-radio value="goodfacilities_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Friends staying here</ion-label>
+                    <ion-radio value="friendsstayinghere_night"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label text-wrap>Other, please specify:</ion-label>
+                    <ion-radio value="other_night"></ion-radio>
+                </ion-item>
+                    <ion-item *ngIf="showOther2" >
+                        <ion-label readonly="true" text-wrap >{{SurveyAnswersNight.newsite_other}}</ion-label>
+                    </ion-item>
+                        <ion-item *ngIf="showOther2" >
+                        <button ion-button (click)="otherPopup(2)">Edit Answer</button>
+                    </ion-item>
+            </ion-list>
+        </ion-slide>
+        <!-- END: Q2.1 Slide-->
+        <!-- START: Q2.2 Slide -->
+        <ion-slide *ngIf="SurveyAnswersNight.initial=='newsite_night'">
+			<ion-list radio-group [(ngModel)]="SurveyAnswersNight.expectations" (ngModelChange)="q231_Listener($event, slides.getActiveIndex())">
+				<ion-label class="surveyQuestion" text-wrap >Did the main feature of the site meet your expectations?</ion-label>
+				<hr class="questionLine" />
+				<ion-item>
+					<ion-label text-wrap>No, it did not meet my expectations</ion-label>
+					<ion-radio value="didnotmeetexpectations_night"></ion-radio>
+				</ion-item>
+				<ion-item>
+					<ion-label text-wrap>Yes, it met my expectations</ion-label>
+					<ion-radio value="metexpectations_night"></ion-radio>
+				</ion-item>
+				<ion-item>
+					<ion-label text-wrap>It was better than expected</ion-label>
+					<ion-radio value="betterthanexpected_night"></ion-radio>
+				</ion-item>
+			</ion-list>
+			<hr class="questionLine" />
+            <ion-label class="surveyQuestion" text-wrap>How satisfied are you with the site you are staying tonight?</ion-label>
+            <ion-range min="1" max="7" step="1" snaps="true" pin="true" [(ngModel)]="SurveyAnswersNight.rating" (ngModelChange)="q232_Listener($event, slides.getActiveIndex())">
+                <ion-label range-left>Unsatisfied</ion-label>
+                <ion-label range-right>Satisfied</ion-label> 
+            </ion-range>
+        </ion-slide>
+        <!-- END: Q2.2 Slide -->
+		<ion-slide *ngIf="SurveyAnswersNight.initial=='newsite_night'">
+			<ion-label class="surveyQuestion" text-wrap>Do you have any additional comments about tonight's site?</ion-label>
+			<p class="commentBox" [(ngModel)]="commentBoxQ2" ngDefaultControl>{{commentBoxQ2}}</p>
+			<button ion-button (click)="enterComments(2)">Add comments</button>
+
+			<hr margin-top=5px class="questionLine" />
+		    <ion-label class="surveyQuestion" text-wrap>Would you like to attach a site photo?</ion-label>
+            <!-- <hr class="questionLine" /> -->
+			<button ion-button (click)="callPicture(2)">Add a site photo</button>
+		<!--	<ion-card *ngIf="PouchLocal && PouchLocal.tonight && PouchLocal.tonight.attachedPicture" >
+				<img src={{PouchLocal.tonight.attachedPicture}}/>
+			</ion-card>-->
+			<ion-card *ngIf="PouchLocal && PouchLocal.tonight && PouchLocal.tonight.attachedPicture">
+				<img src={{PouchLocal.tonight.attachedPicture}}/>
+			</ion-card>
+		</ion-slide>
+        <!-- START: END Slide -->
+        <ion-slide class="endSlide">
+            <ion-label class="surveyQuestion" text-wrap >Thanks for completing your diary entry!</ion-label>
+        </ion-slide>
+        <!-- END: END Slide -->
+    </ion-slides>
+</ion-content>
+<ion-footer>
+	<button ion-button full [disabled]="!slides._allowSwipeToNext && footerButtonText=='Next'" (click)="footerButton()">{{footerButtonText}}</button>
+</ion-footer>

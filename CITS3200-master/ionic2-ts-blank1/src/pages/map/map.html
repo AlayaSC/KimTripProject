@@ -1,0 +1,18 @@
+<ion-header>
+</ion-header>
+<ion-content data-tap-disabled="true">
+  <div id="map"></div>
+  <div id="images"></div>
+  <ion-fab style="padding-bottom: 14px" center bottom>
+  	<button ion-fab color="light" (click)="addEvent()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+    <ion-fab style="padding-bottom: 14px" center top>
+  	<button ion-fab color="light" (click)="getLastDiary()"><ion-icon name="navigate"></ion-icon></button>
+  </ion-fab>
+  <ion-fab id="locate" *ngIf="geolocationEnabled" style="padding-bottom: 14px" right bottom>
+  	<button ion-fab color="secondary" (click)="gpsLocate()"><ion-icon name="locate"></ion-icon></button>
+  </ion-fab>
+  <ion-fab id="locate" *ngIf="!geolocationEnabled" style="padding-bottom: 14px" right bottom>
+  	<button ion-fab color="danger" (click)="gpsLocate()"><ion-icon name="locate"></ion-icon></button>
+  </ion-fab>
+</ion-content>

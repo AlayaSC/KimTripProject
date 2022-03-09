@@ -1,0 +1,58 @@
+page-diary {
+	p {
+        padding: 0 20px;
+        font-size: 18px;
+        line-height: 1.5;
+        color: #60646B;
+    }
+	
+	.fixed-content {
+		background-color: antiquewhite;
+		background-image: url('../assets/img/20180714_170005.jpg');
+		background-size: cover;
+		 background-repeat: no-repeat;
+		 background-origin: content-box;
+		  background-attachment: fixed;
+
+	}
+	
+	.button-md {
+		height: 1.4rem;
+	}
+	
+	.item-block {
+		
+	}
+	
+	.item-md ion-avatar[item-left], .item-md ion-thumbnail[item-left], .item-md ion-avatar[item-start], .item-md ion-thumbnail[item-start] {
+		margin: 4px 16px 0px 0;
+	}
+	
+	.item-md {
+		padding-left: 14px;
+	}
+	
+	.item-md ion-icon[item-left], .item-md ion-icon[item-right], .item-md ion-icon[item-start], .item-md ion-icon[item-end] {
+		margin-top: 3px;
+		margin-bottom: 0px;
+	}
+	
+	.label-md {
+		margin: 8px 8px 8px 0;		
+	}
+	
+	.card-md {
+		margin: 8px;
+		
+	}
+	
+	.fab-md {
+		box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.09), 0 4px 5px rgba(0, 0, 0, 0.1);
+	}
+	
+	.ion-thumbnail {
+		max-height: 50px;
+		max-width: 50px;
+	}
+	
+}

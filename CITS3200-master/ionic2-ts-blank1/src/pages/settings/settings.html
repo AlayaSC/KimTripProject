@@ -1,0 +1,27 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+  <br>
+  <ion-list>
+<!-- 	   <ion-item>
+    	<ion-label>Show your Current Location</ion-label>
+    	<ion-toggle [(ngModel)]="geolocationEnabled" (ngModelChange)="updateNotifications()"></ion-toggle>
+  	</ion-item> -->
+  	<ion-item>
+    	<ion-label>Enable Daily Notifications</ion-label>
+    	<ion-toggle [(ngModel)]="notificationsEnabled" (ngModelChange)="updateNotifications()"></ion-toggle>
+  	</ion-item>
+  	<ion-item>
+    	<span word-wrap=break-word >[Debug] ID: {{user}}</span> 
+  	</ion-item>
+  </ion-list> 
+  <br>
+  <button ion-button full outline color="danger" (click)="resetUserData()">Reset User Data</button>
+
+</ion-content>

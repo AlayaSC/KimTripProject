@@ -1,0 +1,18 @@
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:500px;
+  overflow:auto;  
+  margin-top:20px;
+}
+
+th {
+	padding:10px;
+	white-space:nowrap;
+}
+td {
+	padding-left:10px;
+	padding-right:10px;
+	white-space:nowrap;
+}

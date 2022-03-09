@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-left>
+      Travel Diary
+    </ion-title>
+    <ion-buttons end>
+      <button  ion-button icon-end solid color=primary (click)="finaliseSurvey()">
+        Finalise Survey
+        <ion-icon name="flag"></ion-icon>
+      </button>
+      <button  ion-button icon-end solid color=primary (click)="createPDF()">
+        PDF
+        <ion-icon name="document"></ion-icon>
+      </button>
+</ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<<<<<<< HEAD
+<ion-content id="page5">
+  <div *ngFor="let entry of diaryEntries; let i = index">
+    <ion-card>
+        <ion-fab right>
+            <button ion-fab (click)="viewOnMap(entry)">
+                <ion-icon name="pin"></ion-icon>
+            </button>
+        </ion-fab>
+        <ion-item>
+            <ion-icon name="book" item-left large></ion-icon>
+            <h2>{{entry.date | date:'longDate' }}</h2>
+            <span *ngIf="entry.gpsLocationDay && entry.gpsLocationDay[2]"><br />Day Location: {{entry.gpsLocationDay[2]}}</span>
+            <span *ngIf="entry.gpsLocationNight && entry.gpsLocationNight[2]"><br />Night Location: {{entry.gpsLocationNight[2]}}</span> 
+        </ion-item>
+=======
+<ion-content fullscreen>
+
+	<div *ngFor="let entry of diaryEntries; let i = index">
+		<ion-card *ngIf="entry.date">
+			<ion-fab right>
+				<button ion-fab (click)="viewOnMap(entry)">
+					<ion-icon name="pin"></ion-icon>
+				</button>
+			</ion-fab>
+			<ion-item>
+				<ion-avatar item-start *ngIf="entry.thumbNail">
+				  <img src={{entry.thumbNail}} />
+				</ion-avatar>
+				<ion-icon name="book" item-left large *ngIf="!entry.thumbNail"></ion-icon>
+				<h2><span *ngIf="entry.gpsLocationNight && entry.gpsLocationNight[2]">{{entry.gpsLocationNight[2]}}, </span>{{entry.date | date:'longDate' }}</h2>
+				<span *ngIf="entry.gpsLocationDay && entry.gpsLocationDay[2]">Day Site: {{entry.gpsLocationDay[2]}}</span>
+			</ion-item>
+			<button ion-button color="dark" (click)="editEntry(entry)" clear>Edit Entry</button>
+			<button ion-button color="dark" (click)="shareEntry(entry)" clear>Share</button>
+		</ion-card>
+	</div>
+	<p *ngIf="diaryEntries?.length == 0">Looks like you don't have any diary entries! Click + to add a new one.</p>
+	<ion-fab bottom center>
+	<button ion-fab (click)="createEntry()"><ion-icon name="add"></ion-icon></button>
+	</ion-fab>
+>>>>>>> dev
+
+</ion-content>

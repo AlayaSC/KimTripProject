@@ -1,0 +1,69 @@
+<ion-header>
+</ion-header>
+<ion-content class="termsContent">
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()" [class.withFooterBtn]="currentIndex < 2">
+        <ion-slide>
+            <br>
+			<img align="center" src="assets/img/icon.png" style="max-width:120px"/>
+			<br>
+            <h4 style="text-align:center" >Welcome to the Kimberley Trip Diary</h4>			
+            <p>This diary is part of a University of Western Australia PhD project interested in learning about how people use the Kimberley
+            landscape for recreation and self-drive tourism.</p>
+            <p>The diary will take less than 5 minutes each day, and you will receive a daily notification. If you miss a day you can add it in the next day.</p>
+            <p>You do not need phone reception to make a diary entry.</p>
+        </ion-slide>
+        <ion-slide class="slideScroll">
+            <br>
+			<p>Your privacy is important to us.</p>
+			<p>Information about your privacy and data, and more study details, can be accessed via the Help Menu</p>
+			<p>Map information contained in this app is incomplete and not suitable for identification or navigational purposes. </p>
+            <p><b>I understand that by proceeding I consent to this study.</b></p>
+        </ion-slide>
+        <ion-slide class="slideScroll">
+            <br>
+            <h4>We now have a couple of questions to get the diary started. Please carefully answer all questions.</h4>
+            <br>
+             <ion-list no-lines> 
+                <form [formGroup]="userForm">
+                    <ion-item>
+                        <ion-label floating>What is your date of birth?</ion-label>
+                        <br>
+                        <ion-datetime formControlName="dob" displayFormat="DD MMMM YYYY" pickerFormat="DD:MMM:YY" max="{{currentDate}}" [(ngModel)]="user.dob" [class.invalid]="!userForm.controls.dob.valid  && (userForm.controls.dob.dirty || submitAttempt)">{{currentDate}}</ion-datetime>
+                    </ion-item>
+                    <ion-item *ngIf="!userForm.controls.dob.valid  && (userForm.controls.dob.dirty || submitAttempt)">
+                        <p text-wrap>You must be over 18 years of age to participate in this survey.</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Where do you normally live?</ion-label>
+                        <ion-select formControlName="country" [(ngModel)]="user.country" [class.invalid]="!userForm.controls.country.valid  && (userForm.controls.country.dirty || submitAttempt)">
+                            <ion-option *ngFor="let c of countryList" [value]="c">{{c}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="!userForm.controls.country.valid  && (userForm.controls.country.dirty || submitAttempt)">
+                        <p>Please select your Country or origin.</p>
+                    </ion-item>
+                    <ion-item *ngIf="user.country == 'Australia'">
+                        <ion-label floating>What is your postcode?</ion-label>
+                        <ion-input type="number" formControlName="postcode" [(ngModel)]="user.postcode" [class.invalid]="!userForm.controls.postcode.valid  && (userForm.controls.postcode.dirty || submitAttempt)"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!userForm.controls.postcode.valid  && (userForm.controls.postcode.dirty || submitAttempt)">
+                        <p>Please enter a valid 4 digit Postcode.</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating text-wrap>What date did you depart your home to start this trip?</ion-label>
+                        <br>
+                        <ion-datetime formControlName="departDate" displayFormat="DD MMMM YYYY" pickerFormat="DD:MMM:YY" max="{{currentDate}}" [(ngModel)]="user.departed" [class.invalid]="!userForm.controls.departDate.valid  && (userForm.controls.departDate.dirty || submitAttempt)">{{currentDate}}</ion-datetime>
+                    </ion-item>
+                    <ion-item *ngIf="!userForm.controls.departDate.valid  && (userForm.controls.departDate.dirty || submitAttempt)">
+                        <p>Please enter a valid date of departure.</p>
+                    </ion-item>
+                    <br>
+                    <button type="button" [disabled]="!userForm.valid" ion-button (click)="submitDetails()" block outline>Submit</button>
+                </form>
+            </ion-list>   
+        </ion-slide>
+    </ion-slides>
+    <ion-footer>
+        <button *ngIf="currentIndex < 2" ion-button block outline (click)="next()">{{footerButtonText}}</button>
+    </ion-footer>
+</ion-content>

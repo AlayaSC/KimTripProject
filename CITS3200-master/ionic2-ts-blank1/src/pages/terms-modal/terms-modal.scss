@@ -1,0 +1,108 @@
+﻿terms-modal {
+
+
+
+    .swiper-slide {
+        overflow-y: scroll;
+        display: block;
+		background-image: url('../assets/img/faded2.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-origin: content-box; 
+		background-attachment: fixed;
+    }
+
+    .withFooterBtn {
+        height: calc(100% - 4rem);
+    }
+
+    ion-slides b, ion-slides p {
+        text-align: left;
+    }
+
+    p {
+        padding: 0 20px;
+        font-size: 18px;
+        line-height: 1.5;
+        color: #60646B;
+    }
+
+    ion-label {
+        font-size: 19px;
+    }
+
+    b {
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    h4 {
+        margin: 0;
+        padding: 0 20px;
+        font-size: 20px;
+        text-align: left;
+    }
+
+    ion-footer {
+        position: fixed;
+    }
+	
+	ion-item {
+		background-color: transparent;
+	}
+	
+	ion-list {
+		background-color: rgba(255, 255, 255, 0.4);
+	}
+	
+	form {
+		background-color: rgba(255, 255, 255, 0.0);
+	}
+	
+	.item-md {
+		background-color: transparent;
+	}
+
+    .input-cover {
+      position: static;
+    }
+
+    .scroll-content {
+        padding-bottom: 0 !important;
+    }
+     
+    .swiper-slide {
+        display: block;
+    }
+
+    ion-label, .datetime-text, .select-text {
+        margin-left: 10px !important;
+    }
+
+    ion-input, ion-select, ion-datetime {
+        background-color: #f2f2f2;
+        padding: 3px 10px;
+    }
+
+    .invalid {
+        border: 1px solid #ea6153;
+    }
+
+    .footer-md::before {
+        display: none;
+    }
+
+    .item-inner {
+        border: 0;
+        box-shadow: none !important;
+    }
+}
+
+.ios { //Fix for iOS display issue
+    terms-modal {
+        .withFooterBtn {
+            height: calc(100% - 3.6em);
+        } 
+    }
+}
+
